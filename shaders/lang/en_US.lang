@@ -1,0 +1,11 @@
+#shaders/lang/en_us.lang
+
+#Profiles
+profile.TOASTER=Toaster
+profile.LOW=Low
+profile.MEDIUM=Medium
+profile.HIGH=High
+profile.comment=Toaster : very low shadows, no effects. Low : low shadows, no effects. Medium: medium shadows, no effects. High: medium shadows, ambient occlusion.
+
+#Screens
+screen.LIGHTING=Lighting
