@@ -5,63 +5,48 @@ in development by ZivilesObst
 //Settings//
 #include "/lib/settings.glsl"
 
-//Fragment Shader/////////////////////////////////////////
+//Fragment Shader/////////////////////////////////////////////////
 #ifdef FSH
 
 //Varyings//
 varying vec2 texCoord;
 
-varying vec3 sunVec, upVec;
-
 //Uniforms//
 uniform sampler2D colortex0;
 uniform sampler2D colortex1;
-uniform sampler2D colortex2;
-uniform sampler2D depthtex0;
+uniform vec3 sunVec;
 
-uniform mat4 gbufferProjectionInverse;
-uniform mat4 gbufferModelViewInverse;
-uniform mat4 shadowModelView;
-uniform mat4 shadowProjection;
 
 //Attributes//
 
 //Common Variables//
-const float ambient = 0.025;
-
-//Common Functions//
-
-//Includes//
+const float ambient = 0.1;
 
 //Program//
 void main(){
     vec3 albedo = pow(texture2D(colortex0, texCoord).rgb, vec3(2.2));
-    float depth = texture2D(depthtex0, texCoord).r;
-    if(depth == 1.0){
-        gl_FragData[0] = vec4(albedo, 1.0);
-        return;
-    }
+    vec3 normal = normalize(texture2D(colortex1, texCoord).rgb * 2.0 -1.0);
+    float NdotL = max(dot(normal, normalize(sunVec)), 0.0);
+    vec3 diffuse = albedo * (NdotL + ambient);
+
+    /*DRAWBUFFERS:0*/
+    gl_FragData[0] = vec4(diffuse, 1.0);
 }
 
 #endif
 
-//Vertex Shader/////////////////////////////////////////////
+//Vertex Shader////////////////////////////////////////////////////
 #ifdef VSH
 
 //Varyings//
 varying vec2 texCoord;
 
-varying vec3 sunVec, upVec;
-
 //Uniforms//
-uniform float timeAngle;
-
-uniform mat4 gbufferModelView;
 
 //Program//
 void main(){
     gl_Position = ftransform();
-    texCoord = gl_MultiTexCoord0.xy;
+    texCoord = gl_MultiTexCoord0.st;
 
     /*const vec2 sunRotationData = vec2(cos(sunPathRotation* 0.01745329251994), -sin(sunPathRoatation * 0.01745329251994));
     float ang = fract(timeAngle -0.25);

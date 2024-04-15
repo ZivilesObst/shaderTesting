@@ -5,7 +5,7 @@ in development by ZivilesObst
 //Settings//
 #include "/lib/settings.glsl"
 
-//Fragment Shader/////////////////////////////////////////////////
+//Fragment Shader//////////////////////////////////////////////////
 #ifdef FSH
 
 //Varyings//
@@ -43,7 +43,7 @@ varying vec2 texCoord;
 //Program//
 void main(){
     gl_Position = ftransform();
-    texCoord = gl_MultiTexCoord0.xy;
+    texCoord = gl_MultiTexCoord0.st;
 }
 
 #endif
